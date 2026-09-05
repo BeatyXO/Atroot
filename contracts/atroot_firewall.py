@@ -89,7 +89,7 @@ class ATROOTFirewall(gl.Contract):
 
         result = gl.eq_principle.prompt_comparative(leader, "Validators must agree on the same bounded verdict; rationale is explanatory only.")
         raw = str(result.get("raw", ""))
-        match = re.match(r"^\s*(APPROVE|REJECT|ABSTAIN)\b", raw.upper())
+        match = re.search(r"(?m)^\s*\**\s*(APPROVE|REJECT|ABSTAIN)\b", raw.upper())
         verdict = match.group(1) if match else "ABSTAIN"
         if verdict == "APPROVE":
             proposal.status, proposal.confidence_band = STATUS_APPROVED, 3

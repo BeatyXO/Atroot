@@ -58,3 +58,13 @@ Append-only execution log. Record facts, not guesses: files changed, commands, t
 - Final web-enabled deployment: `0x57C4c389aC53A9ea5700845eaCe774aCB6D7cA06`; deployment transaction `0x5440eae68c847847673dc62c08a2f75ce2f682f962c13fa7b85acf4f31112c46`.
 - Real web-evidence create transaction accepted: `0xe809b70ff0d7274ffdc318c70894afb99decc4da9421ef2c9d05967c49b7b4d4`.
 - Real web-evidence review transaction `0x59c2d004083dd3ee79b59526e861a20f9ed298b60f4e3ee42a31bad647857c27` fetched `https://genlayer.com` inside consensus and ended `UNDETERMINED` after four rounds with validator disagreement. No state was written; this is a valid retryable outcome and is surfaced by the frontend.
+
+## 2026-09-05 — Final parser and production verification
+
+- Live testing with `https://raw.githubusercontent.com/BeatyXO/Atroot/main/README.md` exposed a parser edge case: formatted validator output began with `**REVIEW RESULT:**`, so the prior start-of-string parser incorrectly stored `ABSTAIN` even when the bounded verdict was `APPROVE`.
+- Fixed verdict extraction to accept a markdown-formatted verdict line while still matching only the enumerated decision words.
+- Redeployed corrected contract: `0x71de926FF4C0fc37497101A521B7F3FA0a01016d`; deployment transaction `0x814b7ceaa7c57c044f5ced1257aaed821b16861c56ed56c7c167a405140dfed6`.
+- Corrected-contract create transaction accepted: `0xf1bb61aca6989dedcbde4c84e36cad3f6e70a5498ec725de7723842b4f4d3d99`.
+- Corrected-contract real README review finalized with majority agreement: `0x194e7c0b204f8974ef8f32b13e13f8e499c87df7b9aa2c00cf045371d0e33794`; final proposal read is `status: 2` (`APPROVED`), `confidence_band: 3`.
+- Updated `.env.local.example` and local ignored `.env.local` to the corrected contract address.
+- Live Vercel inspection covered `/`, `/audit`, `/proposals/new`, `/proposals/1`, and `/settings`; all loaded without browser console errors. The production build and TypeScript check completed successfully. The only known build output is the non-blocking autoprefixer warning for `align-items:end`.
