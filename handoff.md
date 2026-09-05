@@ -38,3 +38,15 @@ Append-only execution log. Record facts, not guesses: files changed, commands, t
 - Verified live empty state with `genlayer call ... list_proposals --args 0 10` returning `[]`.
 - Verified live schema for `create_proposal`, `get_proposal`, `list_proposals`, and `review_proposal`; frontend env now points to the deployed address in ignored `.env.local`.
 - Next required work is frontend live data-source wiring and a real injected-wallet create/review lifecycle against this deployment; do not claim the UI is fully live until those transactions are exercised.
+
+## 2026-09-05 — Full product routes and StudioNet lifecycle
+
+- Added shared live contract access in `lib/contract.ts`, typed proposal state in `lib/types.ts`, and shared navigation shell components.
+- Added routes: `/audit`, `/proposals/new`, `/proposals/[id]`, and `/settings`; all read/write directly against GenLayer and show truthful empty/error states.
+- Added live proposal creation and semantic review flows using injected wallet or the explicitly selected browser wallet.
+- First lifecycle attempt exposed a real GenVM runtime mismatch: `gl.message.sender` does not exist. Fixed to `gl.message.sender_address`.
+- Redeployed corrected contract: `0x4Dd3973D3f230F9dcf0C39b23273a206757249e5`; deployment transaction `0x9c9749474433f7b99dd68dcb4f9547aec66fa0608b870bc1af7f000f4e226412`.
+- Real create transaction accepted: `0xc37e8fd7aab68805d8ada14feca654bdc8f9ccedc3d5e923d339b8ec78ec8273`.
+- Real semantic review transaction accepted after 3 consensus rounds: `0x81a9282c06b3daceeab76a0a1a21b783c9d8344ee90c76fe83857477d2d242c2`.
+- Final live read verified proposal 1 as `APPROVED`, confidence band `3`, rationale `APPROVE — high confidence`.
+- Production build passes with 7 routes. Non-blocking warning remains from autoprefixer about `align-items:end`.

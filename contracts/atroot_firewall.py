@@ -67,7 +67,7 @@ class ATROOTFirewall(gl.Contract):
             raise gl.vm.UserError("EXPECTED: all proposal fields are required")
         proposal_id = self.next_proposal_id
         self.next_proposal_id = u256(int(proposal_id) + 1)
-        self.proposals[proposal_id] = Proposal(proposal_id, gl.message.sender, title, target, action_hash, intent, charter_version, STATUS_REVIEWING, 0, "", u256(0))
+        self.proposals[proposal_id] = Proposal(proposal_id, gl.message.sender_address, title, target, action_hash, intent, charter_version, STATUS_REVIEWING, 0, "", u256(0))
         return proposal_id
 
     @gl.public.write

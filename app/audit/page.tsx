@@ -1,0 +1,7 @@
+'use client';
+import { useEffect,useState } from 'react';
+import Link from 'next/link';
+import Shell from '../../components/shell';
+import { listProposals } from '../../lib/contract';
+import { Proposal,statusName } from '../../lib/types';
+export default function Audit(){const [rows,setRows]=useState<Proposal[]>([]);const [error,setError]=useState('');useEffect(()=>{listProposals().then(setRows).catch(e=>setError(e instanceof Error?e.message:'Unable to read the contract.'))},[]);return <Shell><main className="page"><div className="section-kicker">PUBLIC RECORD / CONTRACT STATE</div><h1>Audit trail</h1><p className="lede">Every proposal shown here is read directly from the deployed ATROOT contract. There is no application database behind this view.</p>{error&&<div className="notice">{error}</div>}<div className="audit-table"><div className="audit-row audit-head"><span>ID</span><span>COMMAND</span><span>STATUS</span><span>PROPOSER</span><span></span></div>{rows.length===0&&!error?<div className="empty"><strong>No canonical proposals yet.</strong><span>When a wallet submits a command, it will appear here.</span></div>:rows.map(p=><Link className="audit-row" href={`/proposals/${p.proposal_id}`} key={p.proposal_id}><span>AT-{String(p.proposal_id).padStart(3,'0')}</span><strong>{p.title}</strong><span className="status cyan">{statusName(p.status)}</span><span className="mono">{p.proposer.slice(0,8)}…</span><span>→</span></Link>)}</div></main></Shell>}
