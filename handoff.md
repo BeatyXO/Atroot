@@ -50,3 +50,11 @@ Append-only execution log. Record facts, not guesses: files changed, commands, t
 - Real semantic review transaction accepted after 3 consensus rounds: `0x81a9282c06b3daceeab76a0a1a21b783c9d8344ee90c76fe83857477d2d242c2`.
 - Final live read verified proposal 1 as `APPROVED`, confidence band `3`, rationale `APPROVE — high confidence`.
 - Production build passes with 7 routes. Non-blocking warning remains from autoprefixer about `align-items:end`.
+
+## 2026-09-05 — Contract-side web evidence
+
+- Added HTTPS evidence URL input to the review flow; the contract now calls `gl.nondet.web.get(evidence_url)` inside the leader function and passes the fetched content as untrusted evidence to comparative consensus.
+- Added deterministic HTTPS validation and corrected exact verdict parsing so `ABSTAIN` cannot be misclassified as `APPROVE` due to substring matching.
+- Final web-enabled deployment: `0x57C4c389aC53A9ea5700845eaCe774aCB6D7cA06`; deployment transaction `0x5440eae68c847847673dc62c08a2f75ce2f682f962c13fa7b85acf4f31112c46`.
+- Real web-evidence create transaction accepted: `0xe809b70ff0d7274ffdc318c70894afb99decc4da9421ef2c9d05967c49b7b4d4`.
+- Real web-evidence review transaction `0x59c2d004083dd3ee79b59526e861a20f9ed298b60f4e3ee42a31bad647857c27` fetched `https://genlayer.com` inside consensus and ended `UNDETERMINED` after four rounds with validator disagreement. No state was written; this is a valid retryable outcome and is surfaced by the frontend.
