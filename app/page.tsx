@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Activity, ArrowUpRight, Check, ChevronRight, CircleDot, Copy, KeyRound, LockKeyhole, Plus, Shield, Wallet, X } from 'lucide-react';
 import { createAccount, createClient, generatePrivateKey } from 'genlayer-js';
 import { TransactionStatus } from 'genlayer-js/types';
@@ -13,11 +14,13 @@ const tone = (s:number) => s === 2 ? 'pink' : s === 3 || s === 4 ? 'peach' : 'cy
 const short = (s:string) => s.length > 14 ? `${s.slice(0,6)}…${s.slice(-4)}` : s;
 
 export default function Home(){
+ const router=useRouter();
  const [mode,setMode]=useState<Mode>('injected'); const [address,setAddress]=useState(''); const [browserKey,setBrowserKey]=useState(''); const [proposals,setProposals]=useState<Proposal[]>([]); const [active,setActive]=useState<Proposal|null>(null); const [open,setOpen]=useState(false); const [compose,setCompose]=useState(false); const [copied,setCopied]=useState(false); const [message,setMessage]=useState(''); const [busy,setBusy]=useState(false);
  const [form,setForm]=useState({title:'',target:'',actionHash:'',intent:'',charter:'authority-v1'});
  const copy=async(value=address)=>{if(!value)return; await navigator.clipboard.writeText(value);setCopied(true);setTimeout(()=>setCopied(false),1200)};
  const load=async()=>{if(!contractAddress)return;try{const c=createClient({chain,endpoint:rpcEndpoint,account:createAccount()});const rows=await c.readContract({address:contractAddress as `0x${string}`,functionName:'list_proposals',args:[BigInt(0),BigInt(50)]}) as Proposal[];const clean=Array.isArray(rows)?rows:[];setProposals(clean);setActive(a=>a&&clean.find(p=>p.proposal_id===a.proposal_id)||clean[0]||null);}catch(e){setMessage(e instanceof Error?e.message:'Unable to read StudioNet.');}};
  useEffect(()=>{load();const eth=(window as any).ethereum;if(!eth)return;eth.request({method:'eth_accounts'}).then((a:string[])=>a?.[0]&&setAddress(a[0]));const accounts=(a:string[])=>setAddress(a?.[0]||'');eth.on?.('accountsChanged',accounts);return()=>eth.removeListener?.('accountsChanged',accounts)},[]);
+ useEffect(()=>{const routeProposal=(event:Event)=>{const target=event.target as HTMLElement|null;const button=target?.closest('button');if(!button)return;const isCreate=button.classList.contains('new-btn')||button.textContent?.includes('Create first proposal');if(isCreate){event.preventDefault();event.stopPropagation();router.push('/proposals/new')}};document.addEventListener('click',routeProposal,true);return()=>document.removeEventListener('click',routeProposal,true)},[router]);
  const connectInjected=async()=>{try{const eth=(window as any).ethereum;if(!eth){setMessage('No injected wallet found. Install MetaMask or Rabby, then try again.');return}const a=await eth.request({method:'eth_requestAccounts'});setAddress(a[0]);setMode('injected');setOpen(false)}catch(e){setMessage(e instanceof Error?e.message:'Wallet connection was rejected.')}};
  const createBrowser=()=>{let key=localStorage.getItem('atroot.browserPrivateKey') as `0x${string}`|null;if(!key){key=generatePrivateKey();localStorage.setItem('atroot.browserPrivateKey',key)}const acct=createAccount(key);setBrowserKey(key);setAddress(acct.address);setMode('browser');setOpen(true)};
  const exportKey=()=>{if(!browserKey)return;const blob=new Blob([browserKey],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='atroot-private-key.txt';a.click();URL.revokeObjectURL(a.href)};
