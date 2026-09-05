@@ -1,0 +1,1 @@
+.home-nav{display:flex;gap:18px;align-items:center;margin-left:auto;margin-right:24px}.home-nav a{color:var(--white);font:11px 'DM Mono';letter-spacing:.04em;text-decoration:none}.home-nav a:hover{color:var(--cyan)}@media(max-width:760px){.home-nav{display:none}}
