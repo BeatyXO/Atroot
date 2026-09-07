@@ -2,10 +2,11 @@ import { createAccount, createClient } from 'genlayer-js';
 import { TransactionStatus } from 'genlayer-js/types';
 import { chain, chainName, contractAddress, rpcEndpoint } from './config';
 import type { Proposal } from './types';
+import { isSuccessful } from './receipts';
 
 const address=()=>{if(!contractAddress)throw new Error('ATROOT firewall address is not configured.');return contractAddress as `0x${string}`};
 const clientFor=(account:string|`0x${string}`,browserKey?:`0x${string}`)=>createClient({chain,endpoint:rpcEndpoint,account:browserKey?createAccount(browserKey):account as `0x${string}`});
-async function wait(client:any,hash:any){return client.waitForTransactionReceipt({hash,status:TransactionStatus.FINALIZED,interval:5000,retries:90});}
+async function wait(client:any,hash:any){const receipt=await client.waitForTransactionReceipt({hash,status:TransactionStatus.FINALIZED,interval:5000,retries:90});if(!isSuccessful(receipt))throw new Error(`GenLayer transaction failed: ${receipt?.statusName??receipt?.status_name??'unknown'} / ${receipt?.resultName??receipt?.result_name??'unknown'}`);return receipt;}
 export async function listProposals():Promise<Proposal[]>{const c=createClient({chain,endpoint:rpcEndpoint,account:createAccount()});const result=await c.readContract({address:address(),functionName:'list_proposals',args:[BigInt(0),BigInt(100)]});return Array.isArray(result)?result as Proposal[]:[]}
 export async function getProposal(id:number):Promise<Proposal>{const c=createClient({chain,endpoint:rpcEndpoint,account:createAccount()});return await c.readContract({address:address(),functionName:'get_proposal',args:[BigInt(id)]}) as Proposal}
 export async function publishCharter(account:string,text:string,version='authority-v1',browserKey?:`0x${string}`){const c=clientFor(account,browserKey);if(!browserKey)await c.connect(chainName);return wait(c,await c.writeContract({address:address(),functionName:'publish_charter',args:[version,text],value:BigInt(0)}))}

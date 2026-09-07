@@ -68,3 +68,12 @@ Append-only execution log. Record facts, not guesses: files changed, commands, t
 - Corrected-contract real README review finalized with majority agreement: `0x194e7c0b204f8974ef8f32b13e13f8e499c87df7b9aa2c00cf045371d0e33794`; final proposal read is `status: 2` (`APPROVED`), `confidence_band: 3`.
 - Updated `.env.local.example` and local ignored `.env.local` to the corrected contract address.
 - Live Vercel inspection covered `/`, `/audit`, `/proposals/new`, `/proposals/1`, and `/settings`; all loaded without browser console errors. The production build and TypeScript check completed successfully. The only known build output is the non-blocking autoprefixer warning for `align-items:end`.
+
+## 2026-09-07 — Firewall restoration hardening (not yet redeployed)
+
+- Added `contracts/atroot_firewall_v2.py` and `contracts/protected_target.py` with owner, immutable charter versions, registered agents, separate agent nonce and target release sequence, frozen evidence commitments, semantic review, challenge deadline, queue, protected execution, and post-state confirmation.
+- Updated the primary homepage and proposal detail workflow to read the V2 contract surface rather than the superseded classifier method signatures.
+- Added `lib/receipts.ts:isSuccessful` and made shared V2 write helpers reject receipts that are not consensus-successful and VM-successful.
+- V2 StudioNet deployments used during iteration: protected target `0xba0B65136c6f09af15EDAE746F5eF45C0352f4fe`; latest firewall `0xFaB076d98d977FF781CA2Ac36714b33F229E5a1a`, deployment transaction `0xf8d23f496a1b98cc8b6d32a65f25cb9452592ce399bc0468fdbd5a0cbe525914`.
+- The latest V2 live review safely produced `ABSTAINED` with `Malformed validator result`; this is a fail-closed result, not a successful end-to-end approval. Fresh final lifecycle tests are intentionally pending until the corrected code is deployed.
+- Do not update Vercel to the V2 address until the remaining contract/UI tests and fresh deployment evidence are complete.
