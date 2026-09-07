@@ -35,3 +35,18 @@ python -m unittest discover -s tests -v
 pytest tests/test_v2_direct.py -q
 npx tsc --noEmit --pretty false --incremental false
 ```
+
+## Final live proof evidence
+
+Final pair: firewall `0x1a1490d4BafA65e6C9e412542f46362eE633E056`; target `0x62Ec9747b9bC07a74791d233C1bEb8Bd3a5794D8`.
+
+- Proposal 3 review: `0x9d45f5f0b1880e9bf3f1885609e8c369405c124459185d98a45c71c172f0160c` → `CHALLENGE_WINDOW` / APPROVE, confidence 3.
+- Proposal 3 queue: `0x02f61cb7eebb7dbea5a21bb298c0d444e77fffe520f956947b171302f32bb5b1` → `QUEUED`.
+- Execute parent: `0x8ed0ca121b7e1e18b3db7b4c31355465b400c70adb09a260a838623880d279dc` → finalized `MAJORITY_AGREE`.
+- Triggered child: `0xf347f1fd7649b2ea5989ac8b65f5a2fde93bf6d6a8e678f442c09527116819ce` → finalized successfully.
+- Confirm: `0x7192769ebc39e6d9d0f91bcb8171eaf1c35555c8d14b51f5ab1758703fbf397a`.
+- Final readback: Proposal 3 `status=9 (EXECUTED)`; target `release=v0.3.0`, `release_nonce=1`; `execution_nonce=1`.
+- Direct protected-target bypass rejection: `0x3d373c3f925ce370119e0163c3ae0cc3e61b40129182673d679ea73f427a4c61`.
+- Production Browser Wallet verification at `https://atroot.vercel.app/`: connected modal showed `Wallet connected`, `ACTIVE IDENTITY · BROWSER`, generated address, copy/export/disconnect controls; no console errors.
+
+This is a real successful APPROVE → QUEUED → EXECUTED proof on the final pair. Additional negative scenarios—ABSTAIN, owner challenge, invalid challenge digest, replay, tampering, and stale execution—were not independently live-run in this final evidence pass and must not be represented as live-proven here.

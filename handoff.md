@@ -102,6 +102,17 @@ Append-only execution log. Record facts, not guesses: files changed, commands, t
 - Binding transaction `0x33a441dfa33c5d5bddf36dac298111a6b88f22b0711b9522e4c6b4ace05c5d72`; result `MAJORITY_AGREE`, `ACCEPTED`.
 - The complete live matrix and Vercel production test were not run in this turn; do not claim final submission readiness until they are completed.
 
+## 2026-09-07 — Final live proof evidence
+
+- Proposal 3 review `0x9d45f5f0b1880e9bf3f1885609e8c369405c124459185d98a45c71c172f0160c` reached APPROVE / `CHALLENGE_WINDOW` with confidence 3.
+- Queue `0x02f61cb7eebb7dbea5a21bb298c0d444e77fffe520f956947b171302f32bb5b1` reached `QUEUED`.
+- Execute parent `0x8ed0ca121b7e1e18b3db7b4c31355465b400c70adb09a260a838623880d279dc` finalized `MAJORITY_AGREE`.
+- Triggered child `0xf347f1fd7649b2ea5989ac8b65f5a2fde93bf6d6a8e678f442c09527116819ce` finalized successfully.
+- Confirm `0x7192769ebc39e6d9d0f91bcb8171eaf1c35555c8d14b51f5ab1758703fbf397a` finalized; final readback is Proposal 3 `status=9 (EXECUTED)`, target `v0.3.0`, target nonce `1`, proposal execution nonce `1`.
+- Direct target bypass rejection: `0x3d373c3f925ce370119e0163c3ae0cc3e61b40129182673d679ea73f427a4c61`.
+- Production Browser Wallet verification passed: connected state, browser identity, generated address, copy/export/disconnect controls, and no console errors.
+- Honest limitation: ABSTAIN, owner challenge, invalid challenge digest, replay, tampering, and stale execution were not independently live-run in this final pass.
+
 - Redesigned proposal identity: agent `nonce` is now independent from the protected target `execution_nonce`; both are included in the action digest and the target enforces its own sequence.
 - Review now hashes the fetched `response.body` and returns `ABSTAIN` on evidence-digest mismatch. Re-registration is rejected so an existing agent nonce cannot be reset.
 - Challenge now accepts frozen HTTPS counter-evidence and runs a bounded GenLayer comparative adjudication; disagreement or malformed challenge output fails closed to `CANCELED`.
