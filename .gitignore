@@ -1,5 +1,6 @@
 node_modules/
 .next/
 .npm-cache/
+__pycache__/
 .env.local
 tsconfig.tsbuildinfo
