@@ -77,3 +77,17 @@ Append-only execution log. Record facts, not guesses: files changed, commands, t
 - V2 StudioNet deployments used during iteration: protected target `0xba0B65136c6f09af15EDAE746F5eF45C0352f4fe`; latest firewall `0xFaB076d98d977FF781CA2Ac36714b33F229E5a1a`, deployment transaction `0xf8d23f496a1b98cc8b6d32a65f25cb9452592ce399bc0468fdbd5a0cbe525914`.
 - The latest V2 live review safely produced `ABSTAINED` with `Malformed validator result`; this is a fail-closed result, not a successful end-to-end approval. Fresh final lifecycle tests are intentionally pending until the corrected code is deployed.
 - Do not update Vercel to the V2 address until the remaining contract/UI tests and fresh deployment evidence are complete.
+
+## 2026-09-07 — Ordered hardening and fresh deployment audit
+
+- Redesigned proposal identity: agent `nonce` is now independent from the protected target `execution_nonce`; both are included in the action digest and the target enforces its own sequence.
+- Review now hashes the fetched `response.body` and returns `ABSTAIN` on evidence-digest mismatch. Re-registration is rejected so an existing agent nonce cannot be reset.
+- Challenge now accepts frozen HTTPS counter-evidence and runs a bounded GenLayer comparative adjudication; disagreement or malformed challenge output fails closed to `CANCELED`.
+- Added six automated security-invariant tests; all pass. TypeScript check passes.
+- Fresh protected target: `0x42974Af453B943e684fc4883C91c1048Cff0a207`; deployment transaction `0xe3533ff9b057845c80d642672b7dea5d1962cbe83725c3561b9445322aecad35`.
+- Fresh firewall: `0x6232F50F63Cc68fF877248Af93233b0B2243dd3D`; deployment transaction `0x7dec980d14156ca3e714936524dc089dd0b712d33cd0a5b95bd0e4893d9ac133`.
+- `bind_firewall` finalized with majority agreement in transaction `0x0c7339d280cb0c823032cbbdc261fcbb8f933aaa9eca1a2c3f75433e0db67255`; target readback confirms the firewall address.
+- Fresh charter, agent registration, and exact proposal succeeded: proposal transaction `0x92e7731a67beb87a49f4f4d4dadfc8150f471ce7eca755cf89374976d063bb50`.
+- Fresh real-evidence review transaction `0xe8dbbb8cf3115d5a6e463e0cc28b74ccf2388c87cbea74f9942e8a65eae8c4fe` finalized `MAJORITY_DISAGREE` after four rounds; no authorization was written. This means the live APPROVE scenario still needs a consensus-stable evidence/prompt fixture before execution can be honestly claimed.
+- Direct unauthorized target call was rejected with `EXPECTED: only ATROOT may apply a release`.
+- Current local V2 address in `.env.local.example` is still the fresh firewall address. Vercel must remain unchanged until all live scenarios pass.
