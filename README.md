@@ -13,10 +13,10 @@ ATROOT is a GenLayer command-firewall prototype for one bounded protected target
 Chain ID: `61999`  
 RPC: `https://studio.genlayer.com/api`
 
-Firewall: `0x189332008A6a989ba68F5f049A638Ecca19944cd`  
-Protected target: `0x3F0722f27045EfD5dE32503D06a93288Fa141a0d`
+Firewall: `0x1a1490d4BafA65e6C9e412542f46362eE633E056`  
+Protected target: `0x62Ec9747b9bC07a74791d233C1bEb8Bd3a5794D8`
 
-Final target deployment transaction was not captured by the CLI output. Final firewall deployment transaction: `0x2add30f9d3db28062d234a10a8296bb98f68b835cae5549c69a5434801749a50`. `bind_firewall` finalized with `MAJORITY_AGREE`; target readback confirmed the final firewall address. The target and bind transaction hashes must be recovered from the StudioNet explorer/receipt before final submission.
+Final target deployment transaction: `0x4d228c88a03add250114a1ffc9c21c642e16d9c4b7d5187f5dc10c356f117270`. Final firewall deployment transaction: `0x3b4505b8e4175136cb9be8a5b8cd3445d600a9ba9e90ebe0672e3e33a2e06411`. `bind_firewall` transaction: `0x33a441dfa33c5d5bddf36dac298111a6b88f22b0711b9522e4c6b4ace05c5d72`, finalized `MAJORITY_AGREE`; target readback confirmed the final firewall address.
 
 ## Verification status
 

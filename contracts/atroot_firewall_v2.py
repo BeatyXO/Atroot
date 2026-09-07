@@ -255,7 +255,7 @@ class ATROOTFirewallV2(gl.Contract):
         return True
 
     @gl.public.write
-    def execute_proposal(self, proposal_id: u256) -> bool:
+    def execute_proposal(self, proposal_id: u256) -> dict:
         p = self._proposal(proposal_id)
         if p.status != QUEUED:
             raise gl.vm.UserError("EXPECTED: queued proposal only")
@@ -266,7 +266,7 @@ class ATROOTFirewallV2(gl.Contract):
         if int(state.get("release_nonce", 0)) + 1 != int(p.execution_nonce):
             p.status = FAILED
             self.proposals[proposal_id] = p
-            raise gl.vm.UserError("EXPECTED: stale target execution nonce")
+            return self.get_proposal(proposal_id)
         target.emit(on="finalized").apply_release(self._key(proposal_id), p.release, p.execution_nonce)
         p.status = EXECUTION_PENDING
         self.proposals[proposal_id] = p
@@ -282,7 +282,7 @@ class ATROOTFirewallV2(gl.Contract):
         if str(state.get("release", "")) != p.release or int(state.get("release_nonce", 0)) != int(p.execution_nonce):
             p.status = FAILED
             self.proposals[proposal_id] = p
-            raise gl.vm.UserError("EXPECTED: protected target post-state mismatch")
+            return self.get_proposal(proposal_id)
         p.status = EXECUTED
         self.proposals[proposal_id] = p
         return self.get_proposal(proposal_id)

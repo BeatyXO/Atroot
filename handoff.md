@@ -94,6 +94,14 @@ Append-only execution log. Record facts, not guesses: files changed, commands, t
 - Final `bind_firewall` finalized with `MAJORITY_AGREE` and target readback confirmed the address. Its transaction hash still needs recovery before claiming the evidence log is complete.
 - Vercel was not updated; the full live lifecycle matrix and production E2E test remain outstanding.
 
+## 2026-09-07 — FAILED persistence and final firewall
+
+- Stale execution and post-state mismatch now persist `FAILED` and return the proposal instead of raising after the write.
+- Final target `0x62Ec9747b9bC07a74791d233C1bEb8Bd3a5794D8`; deployment `0x4d228c88a03add250114a1ffc9c21c642e16d9c4b7d5187f5dc10c356f117270`.
+- Final firewall `0x1a1490d4BafA65e6C9e412542f46362eE633E056`; deployment `0x3b4505b8e4175136cb9be8a5b8cd3445d600a9ba9e90ebe0672e3e33a2e06411`.
+- Binding transaction `0x33a441dfa33c5d5bddf36dac298111a6b88f22b0711b9522e4c6b4ace05c5d72`; result `MAJORITY_AGREE`, `ACCEPTED`.
+- The complete live matrix and Vercel production test were not run in this turn; do not claim final submission readiness until they are completed.
+
 - Redesigned proposal identity: agent `nonce` is now independent from the protected target `execution_nonce`; both are included in the action digest and the target enforces its own sequence.
 - Review now hashes the fetched `response.body` and returns `ABSTAIN` on evidence-digest mismatch. Re-registration is rejected so an existing agent nonce cannot be reset.
 - Challenge now accepts frozen HTTPS counter-evidence and runs a bounded GenLayer comparative adjudication; disagreement or malformed challenge output fails closed to `CANCELED`.
