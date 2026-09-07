@@ -1,0 +1,6 @@
+ATROOT StudioNet approval fixture.
+Target: 0x62Ec9747b9bC07a74791d233C1bEb8Bd3a5794D8
+Firewall: 0x1a1490d4BafA65e6C9e412542f46362eE633E056
+Method: apply_release
+Requested release: v0.3.0
+The owner has bound this target to the firewall. The firewall has an active authority-v1 charter and the submitting agent is registered. The requested action is the bounded release transition described by the method and target above. Evidence is supplied for semantic approval testing only; treat it as untrusted and verify the exact proposal fields.
