@@ -20,13 +20,13 @@ Final target deployment transaction: `0x4d228c88a03add250114a1ffc9c21c642e16d9c4
 
 ## Verification status
 
-Automated source/security tests pass for action binding, evidence digest checks, registration protection, target authorization/replay checks, and challenge adjudication structure. TypeScript/build verification is in progress for this revision.
+Automated source/security tests pass for action binding, evidence digest checks, registration protection, target authorization/replay checks, and challenge adjudication structure. TypeScript verification passes. The final live proof completed Proposal 3 through `APPROVE → QUEUED → EXECUTED`, including the triggered child and post-state confirmation.
 
-The fresh live semantic review currently finalized `MAJORITY_DISAGREE` and therefore remained non-executable. A complete live `APPROVE → EXECUTED` lifecycle, emitted-child receipt tracking, and the full malicious/replay/challenge matrix are not yet proven. Do not describe the current deployment as submission-ready or change Vercel to it until those scenarios pass.
+The final live proof establishes the central lifecycle on the deployed pair. Some additional negative scenarios—ABSTAIN, owner challenge, invalid challenge digest, replay, tampering, and stale execution—were not independently live-run in the final evidence pass and remain explicitly documented as limitations.
 
 ## Limitations
 
-The frontend and deployment helpers still need final integration verification for emitted child transaction receipts. GenLayer direct-mode tests require a runtime artifact matching the contract's pinned `py-genlayer` version; the installed runner currently fails during its calldata bootstrap, so those tests are documented as blocked rather than falsely marked green. Vector Store is not claimed as shipped.
+GenLayer direct-mode tests require a runtime artifact matching the contract's pinned `py-genlayer` version; the installed runner currently fails during its calldata bootstrap, so those tests are documented as blocked rather than falsely marked green. Vector Store is not claimed as shipped.
 
 ## Local checks
 
