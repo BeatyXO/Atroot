@@ -84,6 +84,16 @@ Append-only execution log. Record facts, not guesses: files changed, commands, t
 - Final corrected V2 firewall deployed at `0x07A32B82A215795A55101b821f2849C1f835Ec4C` with deployment transaction `0xe540200dde4ca6d834efbaf02d93e539fa7ddd920ab19e25daf67c77ddc4c768`.
 - Binding, authority setup, and the complete live APPROVE/REJECT/ABSTAIN/CHALLENGE/replay/tampering matrix remain to be run against this exact pair; Vercel was intentionally not updated.
 
+## 2026-09-07 — Final requested receipt/challenge revision
+
+- Receipt helper now requires `txExecutionResultName === FINISHED_WITH_RETURN` and waits child IDs from `getTriggeredTransactionIds({ hash })`.
+- Challenge initiation is owner-only; invalid counter-evidence digest raises a contract error.
+- Review comparative consensus now compares only the substantive verdict.
+- Final protected target: `0x3F0722f27045EfD5dE32503D06a93288Fa141a0d` (deployment hash was not captured by the CLI output).
+- Final firewall: `0x189332008A6a989ba68F5f049A638Ecca19944cd`; deployment transaction `0x2add30f9d3db28062d234a10a8296bb98f68b835cae5549c69a5434801749a50`.
+- Final `bind_firewall` finalized with `MAJORITY_AGREE` and target readback confirmed the address. Its transaction hash still needs recovery before claiming the evidence log is complete.
+- Vercel was not updated; the full live lifecycle matrix and production E2E test remain outstanding.
+
 - Redesigned proposal identity: agent `nonce` is now independent from the protected target `execution_nonce`; both are included in the action digest and the target enforces its own sequence.
 - Review now hashes the fetched `response.body` and returns `ABSTAIN` on evidence-digest mismatch. Re-registration is rejected so an existing agent nonce cannot be reset.
 - Challenge now accepts frozen HTTPS counter-evidence and runs a bounded GenLayer comparative adjudication; disagreement or malformed challenge output fails closed to `CANCELED`.

@@ -1,10 +1,10 @@
-/** GenLayer success means both consensus finality and successful VM execution. */
+/** GenLayer write success: finalized, majority-agreed, and returned normally. */
 export function isSuccessful(receipt: any): boolean {
   const status = String(receipt?.statusName ?? receipt?.status_name ?? '').toUpperCase();
   const consensus = String(receipt?.resultName ?? receipt?.result_name ?? '').toUpperCase();
   const execution = String(receipt?.txExecutionResultName ?? receipt?.tx_execution_result_name ?? receipt?.execution_result ?? '').toUpperCase();
   const statusOk = status === 'FINALIZED';
   const consensusOk = consensus === 'MAJORITY_AGREE';
-  const executionOk = execution === 'SUCCESS';
+  const executionOk = execution === 'FINISHED_WITH_RETURN';
   return statusOk && consensusOk && executionOk;
 }
