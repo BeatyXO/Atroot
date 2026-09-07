@@ -226,6 +226,9 @@ class ATROOTFirewallV2(gl.Contract):
     @gl.public.write
     def challenge_proposal(self, proposal_id: u256, evidence_url: str, evidence_digest: str, reason: str) -> bool:
         p = self._proposal(proposal_id)
+        challenger = self.agents.get(gl.message.sender_address)
+        if gl.message.sender_address != self.owner and (challenger is None or not challenger.active):
+            raise gl.vm.UserError("EXPECTED: owner or active registered agent only")
         if p.status != CHALLENGE_WINDOW or int(now()) > int(p.challenge_deadline):
             raise gl.vm.UserError("EXPECTED: challenge window is closed")
         if p.challenged or not evidence_url.startswith("https://") or len(evidence_digest) != 64 or not reason or len(reason) > 240:
@@ -260,6 +263,11 @@ class ATROOTFirewallV2(gl.Contract):
         if p.target != self.target or p.method != "apply_release":
             raise gl.vm.UserError("EXPECTED: protected target mismatch")
         target = gl.get_contract_at(p.target)
+        state = target.view().get_state()
+        if int(state.get("release_nonce", 0)) + 1 != int(p.execution_nonce):
+            p.status = FAILED
+            self.proposals[proposal_id] = p
+            raise gl.vm.UserError("EXPECTED: stale target execution nonce")
         target.emit(on="finalized").apply_release(self._key(proposal_id), p.release, p.execution_nonce)
         p.status = EXECUTION_PENDING
         self.proposals[proposal_id] = p

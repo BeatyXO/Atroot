@@ -1,35 +1,37 @@
-﻿# AtRoot
+# ATROOT
 
-## Product
+ATROOT is a GenLayer command-firewall prototype for one bounded protected target: a release/version state transition. The owner publishes an immutable charter and registers agents. A registered agent submits an exact target, method, release, agent nonce, target execution nonce, and frozen HTTPS evidence digest. GenLayer validators adjudicate the evidence semantically. Approved proposals enter a contract-enforced challenge window, then may be queued, executed through the protected target, and confirmed against target post-state.
 
-An agent requests a privileged action such as changing permissions, moving treasury funds, deploying code, or publishing a release. The contract checks the action against a versioned authority charter, requires semantic validator approval, executes only hash-bound calldata, then confirms the real post-action state.
+## Current implementation
 
-This is a GenLayer-native protocol, not a backend workflow. Off-chain preparation may collect and display evidence, but the contract owns the lifecycle and only deterministic settlement becomes canonical.
+- `contracts/atroot_firewall_v2.py`: owner, charters, agents, nonces, action commitments, evidence digest checks, semantic review, challenge adjudication, queue, execution-pending, and post-state confirmation.
+- `contracts/protected_target.py`: owner-bound target that accepts `apply_release` only from the ATROOT address, enforces a monotonic target release nonce, and rejects consumed proposal keys.
+- Next.js frontend: operations, audit, proposal detail, wallet, and authority setup pages.
 
-## Why GenLayer is essential
+## Fresh StudioNet deployment
 
-Charter interpretation and code/config risk are nondeterministic; roles, hashes, limits, windows, nonce, target, calldata, and post-state confirmation are deterministic. The implementation must make this boundary visible in code, tests, and UI. A normal EVM contract can bind bytes and enforce roles; it cannot independently interpret the meaning of arbitrary source, policy, evidence, or behavior.
+Chain ID: `61999`  
+RPC: `https://studio.genlayer.com/api`
 
-## Existing-work exclusion
+Firewall: `0x07A32B82A215795A55101b821f2849C1f835Ec4C`  
+Protected target: `0x8FB25Fab257942B005B6176ba607578bA73b9afC`
 
-AgentRoot is not RootGuard: it governs many heterogeneous agent actions under a capability charter, not one upgrade controller.|one mock target, one agent, native GEN fee only, code/config URL evidence, successful and malicious proposals| It must not become a betting app, grant reviewer, quote verifier, appeal court, creative lineage app, or generic AI dashboard.
+The final firewall deployment transaction was `0xe540200dde4ca6d834efbaf02d93e539fa7ddd920ab19e25daf67c77ddc4c768`. Binding and the required live lifecycle matrix are still pending; this address must not be placed in Vercel until those checks pass.
 
-## Stack lock
+## Verification status
 
-Next.js App Router + TypeScript; genlayer-js@1.1.8; injected EIP-1193 wallet only; Studionet chain ID 61999; RPC https://studio.genlayer.com/api; Python Intelligent Contract; no server signer and no canonical backend database.
+Automated source/security tests pass for action binding, evidence digest checks, registration protection, target authorization/replay checks, and challenge adjudication structure. TypeScript/build verification is in progress for this revision.
 
-## Lifecycle
+The fresh live semantic review currently finalized `MAJORITY_DISAGREE` and therefore remained non-executable. A complete live `APPROVE → EXECUTED` lifecycle, emitted-child receipt tracking, and the full malicious/replay/challenge matrix are not yet proven. Do not describe the current deployment as submission-ready or change Vercel to it until those scenarios pass.
 
-Agent owner publishes charter; agent proposes action; validators inspect action and sources; one bounded challenge window opens; exact bytes queue; target state is read back; only confirmed execution becomes final.
+## Limitations
 
-## Security invariants
+The frontend and deployment helpers still need final integration verification for emitted child transaction receipts. GenLayer direct-mode tests require a runtime artifact matching the contract's pinned `py-genlayer` version; the installed runner currently fails during its calldata bootstrap, so those tests are documented as blocked rather than falsely marked green. Vector Store is not claimed as shipped.
 
-Agent can never widen its own authority; proposal bytes cannot change between review and execution; failed confirmation cannot mark success; replayed nonce is rejected.
+## Local checks
 
-## Vector Store
-
-Use GenLayer's typed Vector Store for scoped retrieval of policies, source excerpts, manifests, prior decisions, and evidence. Store record ID, kind, source reference, digest, embedding model/version, and bounded excerpt. Retrieval informs the evaluator; similarity alone never authorizes an action.
-
-## MVP proof
-
-
+```text
+python -m unittest discover -s tests -v
+pytest tests/test_v2_direct.py -q
+npx tsc --noEmit --pretty false --incremental false
+```

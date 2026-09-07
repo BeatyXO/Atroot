@@ -80,6 +80,10 @@ Append-only execution log. Record facts, not guesses: files changed, commands, t
 
 ## 2026-09-07 — Ordered hardening and fresh deployment audit
 
+- Final corrected V2 target deployed at `0x8FB25Fab257942B005B6176ba607578bA73b9afC` with deployment transaction `0x60ca1e576d9f42bcb892bd98abacd57668dce3627abbb981918cb45b3281822e`.
+- Final corrected V2 firewall deployed at `0x07A32B82A215795A55101b821f2849C1f835Ec4C` with deployment transaction `0xe540200dde4ca6d834efbaf02d93e539fa7ddd920ab19e25daf67c77ddc4c768`.
+- Binding, authority setup, and the complete live APPROVE/REJECT/ABSTAIN/CHALLENGE/replay/tampering matrix remain to be run against this exact pair; Vercel was intentionally not updated.
+
 - Redesigned proposal identity: agent `nonce` is now independent from the protected target `execution_nonce`; both are included in the action digest and the target enforces its own sequence.
 - Review now hashes the fetched `response.body` and returns `ABSTAIN` on evidence-digest mismatch. Re-registration is rejected so an existing agent nonce cannot be reset.
 - Challenge now accepts frozen HTTPS counter-evidence and runs a bounded GenLayer comparative adjudication; disagreement or malformed challenge output fails closed to `CANCELED`.
